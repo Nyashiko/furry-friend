@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - FurryFriends Fotos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root { --primary: #ff6f61; --light: #f8c8c8; --bg: #fffaf0; }
+    body {
+      background: linear-gradient(135deg, #fdf2e9, #fde8d8);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      background: linear-gradient(45deg, #ff6f61, #ff8780);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      font-weight: 600;
+    }
+    .btn-success {
+      background: #ff8780;
+      border: none;
+      border-radius: 50px;
+      padding: 0.6rem 2rem;
+      font-weight: 600;
+    }
+    .btn-success:hover { background: #ff6f61; }
+    .btn-link { color: var(--primary); font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5 col-lg-4">
+        <div class="card">
+          <div class="card-header"><h3><i class="fas fa-user-plus"></i>Register an account</h3></div>
+          <div class="card-body p-4">
+            <form method="POST">
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control form-control-lg" placeholder="选择一个酷名字" required>
+              </div>
+              <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control form-control-lg" placeholder="设置安全密码" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-success">Register now</button>
+              </div>
+            </form>
+            <div class="text-center mt-3">
+              <a href="{{ url_for('login') }}" class="btn btn-link">Already have an account? Log in</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
