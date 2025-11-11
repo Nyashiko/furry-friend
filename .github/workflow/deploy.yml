@@ -33,6 +33,9 @@ jobs:
           
           cd /opt/furryfriends
 
+          echo "Fixing Git security settings..."
+          git config --global --add safe.directory /opt/furryfriends
+
           echo "Pulling latest code..."
           git fetch --all
           git reset --hard origin/main
@@ -50,5 +53,9 @@ jobs:
 
           echo "Checking service status..."
           sudo systemctl status furryfriends --no-pager
+          
+          echo "Testing application response..."
+          sleep 5
+          curl -f http://localhost:8000 || echo "Application health check failed"
           
           echo "Deployment successful! Website is now updated."
