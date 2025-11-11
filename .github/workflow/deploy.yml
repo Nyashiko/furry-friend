@@ -16,4 +16,4 @@ jobs:
             cd /opt/friend
             git pull origin main
             sudo systemctl restart furryfriends
-            echo "部署成功！$(date)"
+            echo "success！$(date)"
