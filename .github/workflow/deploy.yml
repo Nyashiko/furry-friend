@@ -1,61 +1,61 @@
-name: Deploy to Azure VM
+# name: Deploy to Azure VM
 
-on:
-  push:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+#     - name: Set up Python
+#       uses: actions/setup-python@v5
+#       with:
+#         python-version: '3.11'
 
-    - name: Install dependencies (validation)
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#     - name: Install dependencies (validation)
+#       run: |
+#         python -m pip install --upgrade pip
+#         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Deploy to VM via SSH
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VM_IP }}
-        username: azureuser
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          echo "Starting automatic deployment..."
+#     - name: Deploy to VM via SSH
+#       uses: appleboy/ssh-action@v1.0.3
+#       with:
+#         host: ${{ secrets.VM_IP }}
+#         username: azureuser
+#         key: ${{ secrets.SSH_PRIVATE_KEY }}
+#         script: |
+#           echo "Starting automatic deployment..."
           
-          cd /opt/furryfriends
+#           cd /opt/furryfriends
 
-          echo "Fixing Git security settings..."
-          git config --global --add safe.directory /opt/furryfriends
+#           echo "Fixing Git security settings..."
+#           git config --global --add safe.directory /opt/furryfriends
 
-          echo "Pulling latest code..."
-          git fetch --all
-          git reset --hard origin/main
+#           echo "Pulling latest code..."
+#           git fetch --all
+#           git reset --hard origin/main
 
-          echo "Activating virtual environment..."
-          source venv/bin/activate
+#           echo "Activating virtual environment..."
+#           source venv/bin/activate
 
-          echo "Installing dependencies..."
-          pip install -r requirements.txt
+#           echo "Installing dependencies..."
+#           pip install -r requirements.txt
 
-          echo "Restarting services..."
-          sudo systemctl daemon-reload
-          sudo systemctl restart furryfriends
-          sudo systemctl reload nginx
+#           echo "Restarting services..."
+#           sudo systemctl daemon-reload
+#           sudo systemctl restart furryfriends
+#           sudo systemctl reload nginx
 
-          echo "Checking service status..."
-          sudo systemctl status furryfriends --no-pager
+#           echo "Checking service status..."
+#           sudo systemctl status furryfriends --no-pager
           
-          echo "Testing application response..."
-          sleep 5
-          curl -f http://localhost:8000 || echo "Application health check failed"
+#           echo "Testing application response..."
+#           sleep 5
+#           curl -f http://localhost:8000 || echo "Application health check failed"
           
-          echo "Deployment successful! Website is now updated."
+#           echo "Deployment successful! Website is now updated."
