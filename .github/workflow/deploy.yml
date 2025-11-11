@@ -29,33 +29,10 @@ jobs:
         username: azureuser
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          echo "Starting automatic deployment..."
-          
-          cd /opt/furryfriends
-
-          echo "Fixing Git security settings..."
-          git config --global --add safe.directory /opt/furryfriends
-
-          echo "Pulling latest code..."
-          git fetch --all
-          git reset --hard origin/main
-
-          echo "Activating virtual environment..."
-          source venv/bin/activate
-
-          echo "Installing dependencies..."
-          pip install -r requirements.txt
-
-          echo "Restarting services..."
-          sudo systemctl daemon-reload
+          cd /opt/friend
+          git pull origin main
+          source bin/activate
+          pip install -r requirements.txt --upgrade
+          sudo systemctl restart nginx
           sudo systemctl restart furryfriends
-          sudo systemctl reload nginx
-
-          echo "Checking service status..."
-          sudo systemctl status furryfriends --no-pager
-          
-          echo "Testing application response..."
-          sleep 5
-          curl -f http://localhost:8000 || echo "Application health check failed"
-          
-          echo "Deployment successful! Website is now updated."
+          echo "Deployment successful at $(date)"
