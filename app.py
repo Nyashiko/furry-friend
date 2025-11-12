@@ -199,10 +199,10 @@ def upload():
                 original_url = f"https://furryfriendsstorage.blob.core.windows.net/originals/{filename}"
                 
                 # Generate thumbnail
-                thumb_data = create_thumbnail(file_data)
-                thumb_filename = f"thumb_{filename}"
-                thumb_client = container_client_thumb.get_blob_client(thumb_filename)
-                thumb_client.upload_blob(thumb_data, overwrite=True)
+                # thumb_data = create_thumbnail(file_data)
+                # thumb_filename = f"thumb_{filename}"
+                # thumb_client = container_client_thumb.get_blob_client(thumb_filename)
+                # thumb_client.upload_blob(thumb_data, overwrite=True)
                 thumb_url = f"https://furryfriendsstorage.blob.core.windows.net/thumbnails/{thumb_filename}"
                 
                 # Save to database
