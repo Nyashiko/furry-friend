@@ -2,8 +2,8 @@ name: Test GitHub Actions
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:  # 这允许手动触发
+    branches: [main]
+  workflow_dispatch:    # 允许手动触发
 
 jobs:
   test:
