@@ -1,26 +1,35 @@
-name: Deploy to VM
+name: Deploy to Azure VM
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Deploy
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VM_IP }}
-          username: friend
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /opt/furryfriends
-            git pull origin main
-            source venv/bin/activate
-            pip install -r requirements.txt
-            sudo systemctl restart furryfriends
-            echo "Deployment successful"
+    - name: Deploy to VM
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_USERNAME }}
+        key: ${{ secrets.VM_SSH_KEY }}
+        script: |
+          echo "=== Starting Deployment ==="
+          cd /home/friend
+          
+          # Pull latest code
+          git pull origin main
+          
+          # Install dependencies
+          pip3 install -r requirements.txt
+          
+          # Restart application
+          sudo systemctl restart furryfriends.service
+          
+          echo "=== Deployment completed ==="
+          echo "Application is running at: http://${{ secrets.VM_HOST }}"
