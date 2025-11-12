@@ -5,7 +5,7 @@ from azure.storage.blob import BlobServiceClient
 from azure.identity import DefaultAzureCredential
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, joinedload
 import os
 from PIL import Image
 import io
@@ -68,11 +68,25 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 def create_thumbnail(image_data, size=(150, 150)):
-    img = Image.open(io.BytesIO(image_data))
-    img.thumbnail(size)
-    output = io.BytesIO()
-    img.save(output, format='JPEG', quality=85)
-    return output.getvalue()
+    try:
+        img = Image.open(io.BytesIO(image_data))
+        
+        # Convert image mode to RGB (if it's RGBA)
+        if img.mode in ('RGBA', 'LA'):
+            background = Image.new('RGB', img.size, (255, 255, 255))
+            background.paste(img, mask=img.split()[-1])
+            img = background
+        elif img.mode != 'RGB':
+            img = img.convert('RGB')
+            
+        img.thumbnail(size)
+        output = io.BytesIO()
+        img.save(output, format='JPEG', quality=85)
+        return output.getvalue()
+    except Exception as e:
+        print(f"Thumbnail generation failed: {e}")
+        # Return original image as fallback
+        return image_data
 
 # ==================== Routes ====================
 @app.route('/images/<path:filename>')
@@ -82,22 +96,28 @@ def custom_static(filename):
 @app.route('/')
 def index():
     db = SessionLocal()
-    images = db.query(Image).order_by(Image.imageID.desc()).limit(12).all()
-    db.close()
-    return render_template('index.html', images=images)
+    try:
+        # Use eager loading to load owner relationship
+        images = db.query(Image).options(joinedload(Image.owner)).order_by(Image.imageID.desc()).limit(12).all()
+        return render_template('index.html', images=images)
+    finally:
+        db.close()
 
 @app.route('/gallery')
 def gallery():
     db = SessionLocal()
-    page = request.args.get('page', 1, type=int)
-    per_page = 20
-    
-    images = db.query(Image).order_by(Image.imageID.desc()).offset((page-1)*per_page).limit(per_page).all()
-    total_images = db.query(Image).count()
-    total_pages = (total_images + per_page - 1) // per_page
-    
-    db.close()
-    return render_template('gallery.html', images=images, page=page, total_pages=total_pages)
+    try:
+        page = request.args.get('page', 1, type=int)
+        per_page = 20
+        
+        # Use eager loading to load owner relationship
+        images = db.query(Image).options(joinedload(Image.owner)).order_by(Image.imageID.desc()).offset((page-1)*per_page).limit(per_page).all()
+        total_images = db.query(Image).count()
+        total_pages = (total_images + per_page - 1) // per_page
+        
+        return render_template('gallery.html', images=images, page=page, total_pages=total_pages)
+    finally:
+        db.close()
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -152,47 +172,62 @@ def upload():
         return redirect(url_for('login'))
     
     if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file selected.', 'danger')
+        try:
+            if 'file' not in request.files:
+                flash('No file selected.', 'danger')
+                return redirect(request.url)
+            file = request.files['file']
+            caption = request.form.get('caption', '')
+            
+            if file.filename == '':
+                flash('No file selected.', 'danger')
+                return redirect(request.url)
+                
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_data = file.read()
+                
+                if len(file_data) == 0:
+                    flash('File is empty.', 'danger')
+                    return redirect(request.url)
+                
+                # Upload original image
+                blob_client = container_client_original.get_blob_client(filename)
+                blob_client.upload_blob(file_data, overwrite=True)
+                original_url = f"https://furryfriendsstorage.blob.core.windows.net/originals/{filename}"
+                
+                # Generate thumbnail
+                thumb_data = create_thumbnail(file_data)
+                thumb_filename = f"thumb_{filename}"
+                thumb_client = container_client_thumb.get_blob_client(thumb_filename)
+                thumb_client.upload_blob(thumb_data, overwrite=True)
+                thumb_url = f"https://furryfriendsstorage.blob.core.windows.net/thumbnails/{thumb_filename}"
+                
+                # Save to database
+                db = SessionLocal()
+                try:
+                    new_image = Image(
+                        caption=caption,
+                        ownerUserID=session['user_id'],
+                        originalURL=original_url,
+                        thumbnailURL=thumb_url
+                    )
+                    db.add(new_image)
+                    db.commit()
+                    flash('Upload successful!', 'success')
+                    return redirect(url_for('gallery'))
+                except Exception as e:
+                    db.rollback()
+                    flash(f'Database error: {str(e)}', 'danger')
+                    return redirect(request.url)
+                finally:
+                    db.close()
+            else:
+                flash('Unsupported file format. Please upload JPG, JPEG, PNG, or GIF.', 'danger')
+                
+        except Exception as e:
+            flash(f'Upload failed: {str(e)}', 'danger')
             return redirect(request.url)
-        file = request.files['file']
-        caption = request.form.get('caption', '')
-        
-        if file.filename == '':
-            flash('No file selected.', 'danger')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_data = file.read()
-            
-            # Upload original image
-            blob_client = container_client_original.get_blob_client(filename)
-            blob_client.upload_blob(file_data, overwrite=True)
-            original_url = f"https://furryfriendsstorage.blob.core.windows.net/originals/{filename}"
-            
-            # Generate thumbnail
-            thumb_data = create_thumbnail(file_data)
-            thumb_filename = f"thumb_{filename}"
-            thumb_client = container_client_thumb.get_blob_client(thumb_filename)
-            thumb_client.upload_blob(thumb_data, overwrite=True)
-            thumb_url = f"https://furryfriendsstorage.blob.core.windows.net/thumbnails/{thumb_filename}"
-            
-            # Save to database
-            db = SessionLocal()
-            new_image = Image(
-                caption=caption,
-                ownerUserID=session['user_id'],
-                originalURL=original_url,
-                thumbnailURL=thumb_url
-            )
-            db.add(new_image)
-            db.commit()
-            db.close()
-            
-            flash('Upload successful!', 'success')
-            return redirect(url_for('gallery'))
-        else:
-            flash('Unsupported file format.', 'danger')
     
     return render_template('upload.html')
 
