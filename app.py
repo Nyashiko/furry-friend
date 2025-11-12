@@ -40,22 +40,25 @@ except Exception as e:
     container_client_original = None
     container_client_thumb = None
 
-# Database Configuration - FIXED: Use SQL Authentication
-SQL_CONNECTION_STRING = os.getenv('SQL_CONNECTION_STRING',
-    'mssql+pyodbc:///?odbc_connect=Driver={ODBC Driver 18 for SQL Server};'
-    'Server=tcp:friend.database.windows.net,1433;Database=friend;'
-    'Uid=adminuser;Pwd=Password123;Encrypt=yes;TrustServerCertificate=no;'
+# Database Configuration - FIXED: Force SQL Authentication
+SQL_CONNECTION_STRING = 'mssql+pyodbc:///?odbc_connect=' + \
+    'Driver={ODBC Driver 18 for SQL Server};' + \
+    'Server=tcp:friend.database.windows.net,1433;' + \
+    'Database=friend;' + \
+    'Uid=adminuser;' + \
+    'Pwd=Password123;' + \
+    'Encrypt=yes;' + \
+    'TrustServerCertificate=no;' + \
     'Connection Timeout=30;'
-)
 
-print("Using SQL Authentication")
+print("Using SQL Authentication with username/password")
 try:
     engine = create_engine(SQL_CONNECTION_STRING, pool_pre_ping=True)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     Base = declarative_base()
-    print("Database engine created successfully")
+    print("Database engine created successfully with SQL auth")
 except Exception as e:
-    print(f"Database initialization failed: {str(e)}")
+    print(f"Database connection failed: {e}")
     engine = None
     SessionLocal = None
 
