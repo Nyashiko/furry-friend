@@ -35,56 +35,31 @@
       padding: 0.6rem 2rem;
       font-weight: 600;
     }
-    .btn-outline-primary {
-      border-color: var(--primary);
-      color: var(--primary);
-      border-radius: 50px;
-      font-weight: 600;
-    }
-    .btn-outline-primary:hover {
-      background: var(--primary);
-      color: white;
-    }
     .btn-secondary {
       border-radius: 50px;
-    }
-    .navigation-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Navigation Links -->
-    <div class="navigation-links mb-4">
-      <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
-        <i class="fas fa-home"></i> Home
-      </a>
-      <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary">
-        <i class="fas fa-images"></i> Gallery
-      </a>
-    </div>
-
     <div class="upload-card card">
-      <div class="card-header"><h3><i class="fas fa-cloud-upload-alt"></i> Upload Pet Photos</h3></div>
+      <div class="card-header">
+        <h3><i class="fas fa-cloud-upload-alt"></i> Upload Pet Photos</h3>
+      </div>
       <div class="card-body p-4">
         <form method="POST" enctype="multipart/form-data">
           <div class="mb-3">
             <label class="form-label">Select Photo</label>
             <input type="file" name="file" class="form-control form-control-lg" accept="image/*" required>
+            <div class="form-text">Supported formats: JPG, JPEG, PNG, GIF</div>
           </div>
           <div class="mb-4">
             <label class="form-label">Description (optional)</label>
             <textarea name="caption" class="form-control" rows="3" placeholder="Tell us about your furry friend..."></textarea>
           </div>
           <div class="d-flex gap-2 justify-content-end">
-            <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary">View Gallery</a>
-            <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <a href="{{ url_for('gallery') }}" class="btn btn-secondary">Back to Gallery</a>
+            <button type="submit" class="btn btn-primary">Upload Photo</button>
           </div>
         </form>
       </div>

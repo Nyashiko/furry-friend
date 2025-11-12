@@ -49,6 +49,15 @@
       font-size: 1.8rem;
     }
 
+    .hero-section {
+      background: linear-gradient(135deg, rgba(255, 115, 97, 0.9), rgba(255, 135, 128, 0.9));
+      color: white;
+      padding: 4rem 0;
+      border-radius: 20px;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
     .card {
       border: none;
       border-radius: 16px;
@@ -85,10 +94,6 @@
       background: var(--primary);
       color: white;
     }
-    .btn-outline-success {
-      border-radius: 50px;
-      font-weight: 600;
-    }
 
     .welcome-text {
       font-size: 1.1rem;
@@ -108,30 +113,10 @@
       margin-bottom: 1rem;
     }
 
-    .hero-section {
-      text-align: center;
-      padding: 3rem 0;
-      margin-bottom: 2rem;
-    }
-
-    .hero-title {
+    .feature-icon {
       font-size: 3rem;
-      font-weight: 700;
       color: var(--primary);
       margin-bottom: 1rem;
-    }
-
-    .hero-subtitle {
-      font-size: 1.2rem;
-      color: #666;
-      margin-bottom: 2rem;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
     }
   </style>
 </head>
@@ -140,7 +125,6 @@
   <div class="overlay"></div>
 
   <div class="container mt-4">
-    <!-- Navigation -->
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
       <h1 class="navbar-brand mb-0">
         <i class="fas fa-paw"></i> FurryFriends Fotos
@@ -149,40 +133,14 @@
         {% if session.username %}
           <span class="welcome-text me-3">Welcome, <strong>{{ session.username }}</strong>!</span>
           <a href="{{ url_for('upload') }}" class="btn btn-primary btn-sm">
-            <i class="fas fa-cloud-upload-alt"></i> Upload Photos
-          </a>
-          <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary btn-sm">
-            <i class="fas fa-images"></i> View Gallery
+            <i class="fas fa-cloud-upload-alt"></i> Upload Photo
           </a>
           <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">
             <i class="fas fa-sign-out-alt"></i> Logout
           </a>
         {% else %}
-          <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary btn-sm">
-            <i class="fas fa-images"></i> View Gallery
-          </a>
-          <a href="{{ url_for('login') }}" class="btn btn-success btn-sm">Login</a>
-          <a href="{{ url_for('register') }}" class="btn btn-outline-success btn-sm">Register</a>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- Hero Section -->
-    <div class="hero-section">
-      <h1 class="hero-title">Welcome to FurryFriends Fotos</h1>
-      <p class="hero-subtitle">Share and discover adorable pets from our loving community</p>
-      <div class="action-buttons">
-        <a href="{{ url_for('gallery') }}" class="btn btn-primary btn-lg">
-          <i class="fas fa-images"></i> Explore Gallery
-        </a>
-        {% if not session.username %}
-          <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">
-            <i class="fas fa-user-plus"></i> Join Community
-          </a>
-        {% else %}
-          <a href="{{ url_for('upload') }}" class="btn btn-outline-primary btn-lg">
-            <i class="fas fa-cloud-upload-alt"></i> Upload Photos
-          </a>
+          <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm">Login</a>
+          <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-sm">Register</a>
         {% endif %}
       </div>
     </div>
@@ -198,8 +156,62 @@
       {% endif %}
     {% endwith %}
 
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="container">
+        <h1 class="display-4 fw-bold mb-3">Share Your Pet's Best Moments</h1>
+        <p class="lead mb-4">Join our community of pet lovers and showcase your furry friends to the world</p>
+        {% if session.username %}
+          <a href="{{ url_for('gallery') }}" class="btn btn-light btn-lg me-2">
+            <i class="fas fa-images"></i> Browse Gallery
+          </a>
+          <a href="{{ url_for('upload') }}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-cloud-upload-alt"></i> Upload Photo
+          </a>
+        {% else %}
+          <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-2">
+            <i class="fas fa-user-plus"></i> Join Now
+          </a>
+          <a href="{{ url_for('gallery') }}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-images"></i> View Gallery
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row text-center mb-5">
+      <div class="col-md-4 mb-4">
+        <div class="feature-icon">
+          <i class="fas fa-camera"></i>
+        </div>
+        <h4>Upload Photos</h4>
+        <p class="text-muted">Share high-quality photos of your pets with the community</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <h4>Join Community</h4>
+        <p class="text-muted">Connect with other pet lovers and share experiences</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="feature-icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <h4>Show Love</h4>
+        <p class="text-muted">Discover adorable pets and spread the love</p>
+      </div>
+    </div>
+
     <!-- Recent Photos Section -->
-    <h2 class="mb-4">Recent Photos</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>Recent Photos</h3>
+      <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary">
+        View All Photos <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+
     <div class="row g-4">
       {% for img in images %}
         <div class="col-md-4 col-lg-3">
@@ -225,15 +237,6 @@
         </div>
       {% endfor %}
     </div>
-
-    <!-- View More Section -->
-    {% if images %}
-    <div class="text-center mt-5">
-      <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary btn-lg">
-        <i class="fas fa-images"></i> View All Photos in Gallery
-      </a>
-    </div>
-    {% endif %}
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

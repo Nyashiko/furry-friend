@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Photo Gallery - FurryFriends Photos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery - FurryFriends Photos</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -20,366 +20,173 @@
       min-height: 100vh;
     }
 
-    .gallery-header {
-      background: linear-gradient(135deg, var(--primary), #ff8a80);
-      color: white;
-      padding: 3rem 0;
-      margin-bottom: 3rem;
-      text-align: center;
-    }
-
     .navbar-brand {
       font-weight: 700;
       color: var(--primary) !important;
       font-size: 1.8rem;
     }
 
-    .gallery-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-      padding: 0 1rem;
-    }
-
-    .gallery-item {
-      position: relative;
+    .card {
+      border: none;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      background: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
-    .gallery-item:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
-
-    .gallery-image {
-      width: 100%;
+    .card-img-top {
       height: 250px;
       object-fit: cover;
       cursor: pointer;
-      transition: transform 0.3s ease;
+    }
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
     }
 
-    .gallery-image:hover {
-      transform: scale(1.05);
+    .welcome-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #444;
     }
 
-    .gallery-info {
-      padding: 1.5rem;
-    }
-
-    .gallery-user {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.5rem;
-      color: #666;
-      font-size: 0.9rem;
-    }
-
-    .gallery-user i {
-      margin-right: 0.5rem;
+    .pagination .page-link {
       color: var(--primary);
+      border: none;
+    }
+    .pagination .page-item.active .page-link {
+      background: var(--primary);
+      border-color: var(--primary);
     }
 
-    .gallery-caption {
-      color: #333;
-      font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: 0;
-    }
-
-    .empty-gallery {
+    .empty-state {
       text-align: center;
-      padding: 4rem 2rem;
+      padding: 4rem;
       color: #888;
+      font-size: 1.1rem;
     }
-
-    .empty-gallery i {
+    .empty-state i {
       font-size: 4rem;
       color: var(--primary);
-      margin-bottom: 1.5rem;
-    }
-
-    .empty-gallery h3 {
       margin-bottom: 1rem;
-      color: #666;
     }
 
-    .filter-bar {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
+    .gallery-header {
+      background: linear-gradient(135deg, rgba(255, 115, 97, 0.1), rgba(255, 135, 128, 0.1));
+      padding: 2rem 0;
+      border-radius: 15px;
       margin-bottom: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .search-box {
-      flex: 1;
-      min-width: 250px;
-    }
-
-    .sort-options {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .modal-image {
-      width: 100%;
-      max-height: 80vh;
-      object-fit: contain;
-    }
-
-    .stats-bar {
-      display: flex;
-      justify-content: space-around;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--primary);
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    @media (max-width: 768px) {
-      .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1rem;
-      }
-      
-      .filter-bar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .sort-options {
-        justify-content: center;
-      }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-      <a class="navbar-brand" href="{{ url_for('index') }}">
+
+  <div class="container mt-4">
+    <!-- Navigation -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+      <h1 class="navbar-brand mb-0">
         <i class="fas fa-paw"></i> FurryFriends Fotos
-      </a>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-        <a class="nav-link active" href="{{ url_for('gallery') }}">Gallery</a>
+      </h1>
+      <div>
         {% if session.username %}
-          <a class="nav-link" href="{{ url_for('upload') }}">Upload</a>
-          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          <span class="welcome-text me-3">Welcome, <strong>{{ session.username }}</strong>!</span>
+          <a href="{{ url_for('upload') }}" class="btn btn-primary btn-sm">
+            <i class="fas fa-cloud-upload-alt"></i> Upload Photo
+          </a>
+          <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-home"></i> Home
+          </a>
         {% else %}
-          <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-          <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+          <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm">Login</a>
+          <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-sm">Register</a>
+          <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-home"></i> Home
+          </a>
         {% endif %}
       </div>
     </div>
-  </nav>
 
-  <!-- Gallery Header -->
-  <div class="gallery-header">
-    <div class="container">
-      <h1 class="display-4 fw-bold">Pet Photo Gallery</h1>
-      <p class="lead">Discover adorable pets from our community</p>
-    </div>
-  </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category=='danger' else 'success' if category=='success' else 'warning' if category=='warning' else 'info' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-  <div class="container gallery-container">
-    <!-- Stats Bar -->
-    <div class="stats-bar">
-      <div class="stat-item">
-        <div class="stat-number">{{ images|length }}</div>
-        <div class="stat-label">Total Photos</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">{{ users_count }}</div>
-        <div class="stat-label">Community Members</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">24/7</div>
-        <div class="stat-label">Available</div>
-      </div>
-    </div>
-
-    <!-- Filter Bar -->
-    <div class="filter-bar">
-      <div class="search-box">
-        <input type="text" class="form-control" placeholder="Search photos by caption or username..." id="searchInput">
-      </div>
-      <div class="sort-options">
-        <select class="form-select" id="sortSelect">
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-        </select>
-        <button class="btn btn-outline-primary" onclick="resetFilters()">
-          <i class="fas fa-redo"></i> Reset
-        </button>
-      </div>
+    <!-- Gallery Header -->
+    <div class="gallery-header text-center">
+      <h2 class="display-5 fw-bold text-dark mb-3">Pet Gallery</h2>
+      <p class="lead text-muted">Discover all the adorable pets in our community</p>
     </div>
 
     <!-- Gallery Grid -->
-    <div class="gallery-grid" id="galleryGrid">
+    <div class="row g-4 mb-5">
       {% for img in images %}
-        <div class="gallery-item" data-caption="{{ img.caption|lower }}" data-username="{{ img.owner.username|lower }}" data-date="{{ img.imageID }}">
-          <img src="{{ img.thumbnailURL }}" 
-               class="gallery-image" 
-               alt="{{ img.caption }}"
-               data-bs-toggle="modal" 
-               data-bs-target="#imageModal"
-               data-original="{{ img.originalURL }}"
-               data-caption="{{ img.caption }}"
-               data-username="{{ img.owner.username }}"
-               onclick="openModal(this)">
-          <div class="gallery-info">
-            <div class="gallery-user">
-              <i class="fas fa-user"></i>
-              <span>{{ img.owner.username }}</span>
+        <div class="col-md-4 col-lg-3">
+          <div class="card h-100">
+            <img src="{{ img.thumbnailURL }}" class="card-img-top" alt="{{ img.caption }}" 
+                 onclick="window.open('{{ img.originalURL }}', '_blank')">
+            <div class="card-body d-flex flex-column">
+              <p class="card-text text-muted small mb-1">
+                <i class="fas fa-user"></i> {{ img.owner.username }}
+              </p>
+              {% if img.caption %}
+                <p class="card-text mt-auto">{{ img.caption }}</p>
+              {% endif %}
             </div>
-            {% if img.caption %}
-              <p class="gallery-caption">{{ img.caption }}</p>
-            {% endif %}
           </div>
         </div>
       {% else %}
-        <div class="empty-gallery">
-          <i class="fas fa-camera"></i>
-          <h3>No Photos Yet</h3>
-          <p class="mb-4">Be the first to share your furry friend's photo!</p>
-          {% if session.username %}
-            <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg">
-              <i class="fas fa-cloud-upload-alt"></i> Upload Your First Photo
-            </a>
-          {% else %}
-            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
-              <i class="fas fa-user-plus"></i> Join Our Community
-            </a>
-          {% endif %}
+        <div class="col-12">
+          <div class="empty-state">
+            <i class="fas fa-image"></i>
+            <p>No photos in the gallery yet.</p>
+            {% if session.username %}
+              <p class="mb-3">Be the first to share your pet's photo!</p>
+              <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload First Photo</a>
+            {% else %}
+              <p class="mb-3">Join our community to start sharing photos!</p>
+              <a href="{{ url_for('register') }}" class="btn btn-primary">Join Now</a>
+            {% endif %}
+          </div>
         </div>
       {% endfor %}
     </div>
-  </div>
 
-  <!-- Image Modal -->
-  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="imageModalLabel">Photo Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body text-center">
-          <img id="modalImage" class="modal-image" src="" alt="">
-          <div class="mt-3 text-start">
-            <p><strong><i class="fas fa-user"></i> Uploaded by: </strong><span id="modalUsername"></span></p>
-            <p><strong><i class="fas fa-comment"></i> Description: </strong><span id="modalCaption"></span></p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a href="#" id="downloadLink" class="btn btn-primary" download>
-            <i class="fas fa-download"></i> Download Original
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <nav aria-label="Gallery pagination">
+      <ul class="pagination justify-content-center">
+        <li class="page-item {% if page == 1 %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('gallery', page=page-1) }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
           </a>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
+        </li>
+        {% for p in range(1, total_pages + 1) %}
+          <li class="page-item {% if p == page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('gallery', page=p) }}">{{ p }}</a>
+          </li>
+        {% endfor %}
+        <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('gallery', page=page+1) }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    {% endif %}
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      const searchTerm = e.target.value.toLowerCase();
-      const items = document.querySelectorAll('.gallery-item');
-      
-      items.forEach(item => {
-        const caption = item.getAttribute('data-caption');
-        const username = item.getAttribute('data-username');
-        const matches = caption.includes(searchTerm) || username.includes(searchTerm);
-        item.style.display = matches ? 'block' : 'none';
-      });
-    });
-
-    // Sort functionality
-    document.getElementById('sortSelect').addEventListener('change', function(e) {
-      const sortBy = e.target.value;
-      const grid = document.getElementById('galleryGrid');
-      const items = Array.from(document.querySelectorAll('.gallery-item'));
-      
-      items.sort((a, b) => {
-        if (sortBy === 'newest') {
-          return parseInt(b.getAttribute('data-date')) - parseInt(a.getAttribute('data-date'));
-        } else {
-          return parseInt(a.getAttribute('data-date')) - parseInt(b.getAttribute('data-date'));
-        }
-      });
-      
-      // Clear and re-append sorted items
-      grid.innerHTML = '';
-      items.forEach(item => grid.appendChild(item));
-    });
-
-    // Modal functionality
-    function openModal(element) {
-      const originalSrc = element.getAttribute('data-original');
-      const caption = element.getAttribute('data-caption');
-      const username = element.getAttribute('data-username');
-      
-      document.getElementById('modalImage').src = originalSrc;
-      document.getElementById('modalCaption').textContent = caption || 'No description provided';
-      document.getElementById('modalUsername').textContent = username;
-      document.getElementById('downloadLink').href = originalSrc;
-    }
-
-    function resetFilters() {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('sortSelect').value = 'newest';
-      
-      const items = document.querySelectorAll('.gallery-item');
-      items.forEach(item => {
-        item.style.display = 'block';
-      });
-      
-      // Reset sort to newest
-      const grid = document.getElementById('galleryGrid');
-      const itemsArray = Array.from(items);
-      itemsArray.sort((a, b) => parseInt(b.getAttribute('data-date')) - parseInt(a.getAttribute('data-date')));
-      grid.innerHTML = '';
-      itemsArray.forEach(item => grid.appendChild(item));
-    }
-
-    // Initialize gallery with newest first
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('sortSelect').value = 'newest';
-    });
-  </script>
 </body>
 </html>

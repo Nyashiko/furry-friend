@@ -26,32 +26,15 @@
       padding: 1.5rem;
       font-weight: 600;
     }
-    .btn-success {
+    .btn-primary {
       background: #ff8780;
       border: none;
       border-radius: 50px;
       padding: 0.6rem 2rem;
       font-weight: 600;
     }
-    .btn-success:hover { background: #ff6f61; }
-    .btn-outline-primary {
-      border-color: var(--primary);
-      color: var(--primary);
-      border-radius: 50px;
-      font-weight: 600;
-    }
-    .btn-outline-primary:hover {
-      background: var(--primary);
-      color: white;
-    }
+    .btn-primary:hover { background: #ff6f61; }
     .btn-link { color: var(--primary); font-weight: 500; }
-    .navigation-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
-    }
   </style>
 </head>
 <body>
@@ -59,33 +42,25 @@
     <div class="row justify-content-center">
       <div class="col-md-5 col-lg-4">
         <div class="card">
-          <div class="card-header"><h3><i class="fas fa-user-plus"></i> Create Account</h3></div>
+          <div class="card-header">
+            <h3><i class="fas fa-user-plus"></i> Create Account</h3>
+          </div>
           <div class="card-body p-4">
             <form method="POST">
               <div class="mb-3">
                 <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter your username" required>
+                <input type="text" name="username" class="form-control form-control-lg" placeholder="Choose a username" required>
               </div>
               <div class="mb-4">
                 <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control form-control-lg" placeholder="Set a password" required>
+                <input type="password" name="password" class="form-control form-control-lg" placeholder="Create a password" required>
               </div>
               <div class="d-grid">
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="submit" class="btn btn-primary">Register</button>
               </div>
             </form>
             <div class="text-center mt-3">
               <a href="{{ url_for('login') }}" class="btn btn-link">Already have an account? Login here</a>
-            </div>
-            
-            <!-- Navigation Links -->
-            <div class="navigation-links">
-              <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-home"></i> Home
-              </a>
-              <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-images"></i> Gallery
-              </a>
             </div>
           </div>
         </div>
