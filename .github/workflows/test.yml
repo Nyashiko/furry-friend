@@ -1,0 +1,23 @@
+name: Test GitHub Actions
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # 这允许手动触发
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Simple Test
+        run: |
+          echo "��� GitHub Actions 工作正常！"
+          echo "分支: ${{ github.ref }}"
+          echo "提交: ${{ github.sha }}"
+          echo "仓库: ${{ github.repository }}"
+          
+      - name: List Files
+        run: ls -la
