@@ -1,17 +1,26 @@
-name: Deploy
+name: Deploy to Azure VM
+
 on:
   push:
     branches: [ main ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VM_IP }}
-          username: azureuser
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /opt/friend
-            git pull
-            sudo systemctl restart furryfriends
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Test SSH Connection
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VM_IP }}
+        username: friend
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo " SSH连接成功！"
+          echo "当前用户: $(whoami)"
+          echo "当前目录: $(pwd)"
+          echo "目录内容:"
+          ls -la
+          echo "--- 测试完成 ---"
