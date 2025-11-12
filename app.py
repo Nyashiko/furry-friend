@@ -68,26 +68,28 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 def create_thumbnail(image_data, size=(150, 150)):
+    """优化的缩略图生成函数"""
     try:
         img = Image.open(io.BytesIO(image_data))
-        
-        # Convert image mode to RGB (if it's RGBA)
-        if img.mode in ('RGBA', 'LA'):
-            background = Image.new('RGB', img.size, (255, 255, 255))
-            background.paste(img, mask=img.split()[-1])
-            img = background
-        elif img.mode != 'RGB':
+
+        max_dimension = 2000
+        if max(img.size) > max_dimension:
+            ratio = max_dimension / max(img.size)
+            new_size = (int(img.size[0] * ratio), int(img.size[1] * ratio))
+            img = img.resize(new_size, Image.Resampling.LANCZOS)
+
+        if img.mode in ('RGBA', 'LA', 'P'):
             img = img.convert('RGB')
-            
-        img.thumbnail(size)
+
+        img.thumbnail(size, Image.Resampling.LANCZOS)
+
         output = io.BytesIO()
-        img.save(output, format='JPEG', quality=85)
+        img.save(output, format='JPEG', quality=80, optimize=True)
         return output.getvalue()
+
     except Exception as e:
         print(f"Thumbnail generation failed: {e}")
-        # Return original image as fallback
         return image_data
-
 # ==================== Routes ====================
 @app.route('/images/<path:filename>')
 def custom_static(filename):
