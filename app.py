@@ -29,10 +29,7 @@ container_client_original = blob_service_client.get_container_client("originals"
 container_client_thumb = blob_service_client.get_container_client("thumbnails")
 
 SQL_CONNECTION_STRING = os.getenv('SQL_CONNECTION_STRING',
-    'mssql+pyodbc:///?odbc_connect=Driver={ODBC Driver 18 for SQL Server};'
-    'Server=tcp:friend.database.windows.net,1433;Database=friend;'
-    'Uid=adminuser;Pwd=Password123;Encrypt=yes;TrustServerCertificate=no;'
-    'Connection Timeout=30;'
+    'mssql+pyodbc://adminuser:Password123@friend.database.windows.net:1433/friend?driver=ODBC+Driver+18+for+SQL+Server&Encrypt=yes;TrustServerCertificate=no;Connection+Timeout=30'
 )
 
 if 'Authentication=ActiveDirectoryMSI' in SQL_CONNECTION_STRING:
