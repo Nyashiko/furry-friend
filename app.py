@@ -7,9 +7,10 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, joinedload
 import os
-from PIL import Image
+from PIL import Image as PILImage
 import io
 import bcrypt
+
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'your-secret-key-change-in-production'
@@ -18,19 +19,22 @@ app.secret_key = 'your-secret-key-change-in-production'
 connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
 if connect_str:
     blob_service_client = BlobServiceClient.from_connection_string(connect_str)
+    print("Using connection string for Azure Storage")
 else:
+    from azure.identity import DefaultAzureCredential
     credential = DefaultAzureCredential()
     blob_service_client = BlobServiceClient(
-        account_url="https://furryfriendsstorage.blob.core.windows.net",
+        account_url="https://friend01.blob.core.windows.net",
         credential=credential
     )
+    print("Using DefaultAzureCredential for Azure Storage")
 
 container_client_original = blob_service_client.get_container_client("originals")
 container_client_thumb = blob_service_client.get_container_client("thumbnails")
 
-SQL_CONNECTION_STRING = os.getenv('SQL_CONNECTION_STRING')
-if not SQL_CONNECTION_STRING:
-    raise ValueError("SQL_CONNECTION_STRING environment variable is required")
+SQL_CONNECTION_STRING = os.getenv('SQL_CONNECTION_STRING',
+    'mssql+pyodbc://adminuser:Password123@friend.database.windows.net:1433/friend?driver=ODBC+Driver+18+for+SQL+Server&Encrypt=yes&TrustServerCertificate=no&Connection+Timeout=30'
+)
 
 print("Using SQL Authentication")
 
@@ -62,9 +66,9 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 def create_thumbnail(image_data, size=(150, 150)):
-    """优化的缩略图生成函数"""
+
     try:
-        img = Image.open(io.BytesIO(image_data))
+        img = PILImage.open(io.BytesIO(image_data))
 
         max_dimension = 2000
         if max(img.size) > max_dimension:
@@ -190,14 +194,14 @@ def upload():
                 # Upload original image
                 blob_client = container_client_original.get_blob_client(filename)
                 blob_client.upload_blob(file_data, overwrite=True)
-                original_url = f"https://furryfriendsstorage.blob.core.windows.net/originals/{filename}"
+                original_url = f"https://friend01.blob.core.windows.net/originals/{filename}"
                 
                 # Generate thumbnail
                 # thumb_data = create_thumbnail(file_data)
                 # thumb_filename = f"thumb_{filename}"
                 # thumb_client = container_client_thumb.get_blob_client(thumb_filename)
                 # thumb_client.upload_blob(thumb_data, overwrite=True)
-                thumb_url = f"https://furryfriendsstorage.blob.core.windows.net/thumbnails/{thumb_filename}"
+                thumb_url = f"https://friend01.blob.core.windows.net/thumbnails/{thumb_filename}"
                 
                 # Save to database
                 db = SessionLocal()
