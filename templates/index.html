@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - FurryFriends Photos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FurryFriends Photos - Pet Photography Community</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --dji-dark: #FFFFFF;
-      --dji-dark-gray: #FFF5F8;
-      --dji-gray: #FFE6EC;
-      --dji-green: #FF69B4;
-      --dji-green-light: #FF85B3;
-      --dji-white: #333333;
-      --dji-gray-light: #666666;
-      --dji-border: #FFD1DC;
+      --soft-pink: #FFE8F0;
+      --warm-pink: #FFB6C1;
+      --deep-pink: #FF69B4;
+      --light-pink: #FFF0F5;
+      --white: #FFFFFF;
+      --soft-gray: #F8F8F8;
+      --text-dark: #333333;
+      --text-light: #666666;
+      --border-light: #E8E8E8;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     * {
@@ -24,127 +25,248 @@
       box-sizing: border-box;
     }
     body {
-      background-color: var(--dji-dark);
-      color: var(--dji-white);
+      background-color: var(--soft-pink);
+      color: var(--text-dark);
       font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
     }
-    .auth-card {
-      background-color: var(--dji-dark-gray);
-      border: 1px solid var(--dji-border);
-      border-radius: 12px;
-      padding: 2.5rem;
-      width: 100%;
-      max-width: 450px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--white);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-light);
+      z-index: 1000;
       transition: var(--transition);
+      box-shadow: 0 2px 20px rgba(255, 182, 193, 0.1);
     }
-    .auth-card:hover {
-      border-color: var(--dji-green);
-      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.1);
+    .nav-bar:hover {
+      border-bottom-color: var(--warm-pink);
     }
-    .auth-header {
-      text-align: center;
-      margin-bottom: 2rem;
+    .nav-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
     }
-    .auth-logo {
-      font-size: 1.8rem;
+    .brand-logo {
+      font-size: 1.5rem;
       font-weight: 700;
-      color: var(--dji-white);
+      color: var(--text-dark);
       text-decoration: none;
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 0.5rem;
-      margin-bottom: 1rem;
     }
-    .auth-logo i {
-      color: var(--dji-green);
+    .brand-logo i {
+      color: var(--deep-pink);
     }
-    .auth-title {
-      font-size: 1.8rem;
-      font-weight: 600;
+    .nav-menu {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
     }
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
+    .nav-link {
+      color: var(--text-dark);
+      text-decoration: none;
       font-size: 0.95rem;
-      color: var(--dji-white);
-    }
-    .form-control {
-      width: 100%;
-      padding: 0.9rem;
-      background-color: var(--dji-gray);
-      border: 1px solid var(--dji-border);
-      border-radius: 6px;
-      color: var(--dji-white);
-      font-size: 1rem;
-      transition: var(--transition);
-    }
-    .form-control:focus {
-      outline: none;
-      border-color: var(--dji-green);
-      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
-    }
-    .btn {
-      width: 100%;
-      padding: 0.9rem;
-      border-radius: 6px;
-      font-size: 1rem;
       font-weight: 500;
-      border: none;
-      cursor: pointer;
       transition: var(--transition);
+      position: relative;
+    }
+    .nav-link:hover {
+      color: var(--deep-pink);
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--deep-pink);
+      transition: var(--transition);
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .action-btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .btn-outline {
+      color: var(--text-dark);
+      border: 1px solid var(--border-light);
+    }
+    .btn-outline:hover {
+      border-color: var(--deep-pink);
+      color: var(--deep-pink);
+      background-color: var(--light-pink);
     }
     .btn-primary {
-      background-color: var(--dji-green);
-      color: var(--dji-white);
+      color: var(--white);
+      background-color: var(--deep-pink);
+      border: 1px solid var(--deep-pink);
     }
     .btn-primary:hover {
-      background-color: var(--dji-green-light);
+      background-color: var(--warm-pink);
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
     }
-    .auth-footer {
-      text-align: center;
-      margin-top: 1.5rem;
+    .welcome-text {
       font-size: 0.95rem;
-      color: var(--dji-gray-light);
+      color: var(--text-light);
     }
-    .auth-link {
-      color: var(--dji-green);
-      text-decoration: none;
-      font-weight: 500;
+    .welcome-text strong {
+      color: var(--text-dark);
+    }
+    .hero-section {
+      margin-top: 60px;
+      padding: 6rem 2rem;
+      background: linear-gradient(180deg, var(--white) 0%, var(--soft-pink) 100%);
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      color: var(--text-dark);
+    }
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .btn-large {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      border-radius: 25px;
+    }
+    .feature-section {
+      max-width: 1440px;
+      margin: 8rem auto;
+      padding: 0 2rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+    }
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .gallery-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: var(--transition);
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
+    }
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--warm-pink);
+      box-shadow: 0 10px 30px rgba(255, 182, 193, 0.2);
+    }
+    .gallery-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
       transition: var(--transition);
     }
-    .auth-link:hover {
-      text-decoration: underline;
-      color: var(--dji-green-light);
+    .gallery-card:hover .gallery-img {
+      transform: scale(1.05);
+    }
+    .gallery-info {
+      padding: 1.2rem;
+    }
+    .gallery-owner {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .gallery-caption {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+    }
+    .view-all-btn {
+      text-align: center;
+    }
+    .alert-container {
+      max-width: 1440px;
+      margin: 1rem auto 0;
+      padding: 0 2rem;
+      position: relative;
+      top: 70px;
     }
     .alert {
-      border-radius: 6px;
+      border-radius: 12px;
       padding: 1rem 1.2rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       border: none;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
     .alert-success {
-      background-color: rgba(255, 105, 180, 0.1);
-      color: var(--dji-green);
-      border-left: 3px solid var(--dji-green);
+      background-color: rgba(255, 182, 193, 0.1);
+      color: var(--deep-pink);
+      border-left: 3px solid var(--deep-pink);
     }
     .alert-danger {
-      background-color: rgba(239, 68, 68, 0.1);
-      color: #EF4444;
-      border-left: 3px solid #EF4444;
+      background-color: rgba(255, 182, 193, 0.1);
+      color: #FF69B4;
+      border-left: 3px solid #FF69B4;
+    }
+    .alert-warning {
+      background-color: rgba(255, 182, 193, 0.1);
+      color: #FFB6C1;
+      border-left: 3px solid #FFB6C1;
+    }
+    .alert-info {
+      background-color: rgba(255, 182, 193, 0.1);
+      color: #FF69B4;
+      border-left: 3px solid #FF69B4;
     }
     .alert-btn {
       background: none;
@@ -154,16 +276,47 @@
       cursor: pointer;
       padding: 0 0.5rem;
     }
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="auth-card">
-    <div class="auth-header">
-      <a href="{{ url_for('index') }}" class="auth-logo">
+  <nav class="nav-bar">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
         <i class="fas fa-paw"></i> FurryFriends
       </a>
-      <h2 class="auth-title">Login</h2>
+      <ul class="nav-menu">
+        <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('gallery') }}" class="nav-link">Gallery</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link">Upload</a></li>
+      </ul>
+      <div class="nav-actions">
+        {% if session.username %}
+          <span class="welcome-text">Welcome, <strong>{{ session.username }}</strong>!</span>
+          <a href="{{ url_for('upload') }}" class="action-btn btn-primary">Upload</a>
+          <a href="{{ url_for('logout') }}" class="action-btn btn-outline">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="action-btn btn-outline">Login</a>
+          <a href="{{ url_for('register') }}" class="action-btn btn-primary">Register</a>
+        {% endif %}
+      </div>
     </div>
+  </nav>
+
+  <div class="alert-container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -174,21 +327,57 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    <form method="POST">
-      <div class="form-group">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" id="username" name="username" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" name="password" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-    <div class="auth-footer">
-      Don't have an account? <a href="{{ url_for('register') }}" class="auth-link">Register</a>
-    </div>
   </div>
+
+  <section class="hero-section">
+    <h1 class="hero-title">Capture & Share Your Pet's Moments</h1>
+    <p class="hero-subtitle">Join our community of pet lovers to showcase your furry friends, discover amazing photos, and connect with like-minded people</p>
+    <div class="hero-btns">
+      {% if session.username %}
+        <a href="{{ url_for('gallery') }}" class="action-btn btn-primary btn-large">Explore Gallery</a>
+        <a href="{{ url_for('upload') }}" class="action-btn btn-outline btn-large">Upload Photo</a>
+      {% else %}
+        <a href="{{ url_for('register') }}" class="action-btn btn-primary btn-large">Join Now</a>
+        <a href="{{ url_for('gallery') }}" class="action-btn btn-outline btn-large">View Gallery</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="feature-section">
+    <div class="section-header">
+      <h2 class="section-title">Recent Photos</h2>
+      <p class="section-desc">Discover the latest amazing pet photos shared by our community members</p>
+    </div>
+    <div class="gallery-grid">
+      {% for img in images[:5] %}
+        <div class="gallery-card">
+          <img src="{{ img.thumbnailURL }}" alt="{{ img.caption }}" class="gallery-img" onclick="window.open('{{ img.originalURL }}', '_blank')">
+          <div class="gallery-info">
+            <p class="gallery-owner"><i class="fas fa-user"></i> {{ img.owner.username }}</p>
+            {% if img.caption %}
+              <p class="gallery-caption">{{ img.caption }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="gallery-card" style="grid-column: 1 / -1; padding: 4rem; text-align: center;">
+          <i class="fas fa-image" style="font-size: 4rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+          <p style="font-size: 1.1rem; color: var(--text-light);">No photos available yet</p>
+          {% if session.username %}
+            <p style="margin: 1rem 0; color: var(--text-dark);">Be the first to share your pet's photo!</p>
+            <a href="{{ url_for('upload') }}" class="action-btn btn-primary">Upload Now</a>
+          {% else %}
+            <p style="margin: 1rem 0; color: var(--text-dark);">Join our community to start sharing photos!</p>
+            <a href="{{ url_for('register') }}" class="action-btn btn-primary">Join Community</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="view-all-btn">
+      <a href="{{ url_for('gallery') }}" class="action-btn btn-outline btn-large">View All Photos</a>
+    </div>
+  </section>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
