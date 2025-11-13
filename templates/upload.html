@@ -8,15 +8,15 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --dji-dark: #121212;
-      --dji-dark-gray: #1E1E1E;
-      --dji-gray: #333333;
-      --dji-green: #00B42A;
-      --dji-green-light: #33C554;
-      --dji-white: #FFFFFF;
-      --dji-gray-light: #86868B;
-      --dji-border: #2D2D2D;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --pink-primary: #FF85A2;
+      --pink-light: #FFE6EE;
+      --pink-dark: #FF5D8F;
+      --white: #FFFFFF;
+      --gray-light: #F5F5F5;
+      --text-dark: #333333;
+      --text-gray: #666666;
+      --border-light: #E0E0E0;
+      --transition: all 0.3s ease;
     }
     * {
       margin: 0;
@@ -24,8 +24,8 @@
       box-sizing: border-box;
     }
     body {
-      background-color: var(--dji-dark);
-      color: var(--dji-white);
+      background-color: var(--white);
+      color: var(--text-dark);
       font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       line-height: 1.6;
       min-height: 100vh;
@@ -36,14 +36,15 @@
       top: 0;
       left: 0;
       right: 0;
-      background-color: rgba(18, 18, 18, 0.95);
+      background-color: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--dji-border);
+      border-bottom: 1px solid var(--border-light);
       z-index: 1000;
       transition: var(--transition);
+      box-shadow: 0 2px 10px rgba(255, 133, 162, 0.05);
     }
     .dji-nav:hover {
-      border-bottom-color: var(--dji-green);
+      border-bottom-color: var(--pink-primary);
     }
     .nav-container {
       max-width: 1440px;
@@ -57,14 +58,14 @@
     .dji-logo {
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--dji-white);
+      color: var(--text-dark);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
     .dji-logo i {
-      color: var(--dji-green);
+      color: var(--pink-primary);
     }
     .nav-menu {
       display: flex;
@@ -72,7 +73,7 @@
       list-style: none;
     }
     .nav-link {
-      color: var(--dji-white);
+      color: var(--text-dark);
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 500;
@@ -80,7 +81,7 @@
       position: relative;
     }
     .nav-link:hover {
-      color: var(--dji-green);
+      color: var(--pink-primary);
     }
     .nav-link::after {
       content: '';
@@ -89,7 +90,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background-color: var(--dji-green);
+      background-color: var(--pink-primary);
       transition: var(--transition);
     }
     .nav-link:hover::after {
@@ -109,29 +110,29 @@
       transition: var(--transition);
     }
     .btn-outline {
-      color: var(--dji-white);
-      border: 1px solid var(--dji-border);
+      color: var(--pink-primary);
+      border: 1px solid var(--pink-primary);
     }
     .btn-outline:hover {
-      border-color: var(--dji-green);
-      color: var(--dji-green);
-      background-color: rgba(0, 180, 42, 0.05);
+      border-color: var(--pink-dark);
+      color: var(--pink-dark);
+      background-color: rgba(255, 133, 162, 0.05);
     }
     .btn-primary {
-      color: var(--dji-white);
-      background-color: var(--dji-green);
-      border: 1px solid var(--dji-green);
+      color: var(--white);
+      background-color: var(--pink-primary);
+      border: 1px solid var(--pink-primary);
     }
     .btn-primary:hover {
-      background-color: var(--dji-green-light);
+      background-color: var(--pink-dark);
       transform: translateY(-2px);
     }
     .welcome-text {
       font-size: 0.95rem;
-      color: var(--dji-gray-light);
+      color: var(--text-gray);
     }
     .welcome-text strong {
-      color: var(--dji-white);
+      color: var(--text-dark);
     }
     .container {
       max-width: 800px;
@@ -151,22 +152,22 @@
       align-items: center;
     }
     .alert-success {
-      background-color: rgba(0, 180, 42, 0.1);
-      color: var(--dji-green);
-      border-left: 3px solid var(--dji-green);
+      background-color: rgba(16, 185, 129, 0.08);
+      color: #10B981;
+      border-left: 3px solid #10B981;
     }
     .alert-danger {
-      background-color: rgba(239, 68, 68, 0.1);
+      background-color: rgba(239, 68, 68, 0.08);
       color: #EF4444;
       border-left: 3px solid #EF4444;
     }
     .alert-warning {
-      background-color: rgba(251, 191, 36, 0.1);
+      background-color: rgba(251, 191, 36, 0.08);
       color: #FBBF24;
       border-left: 3px solid #FBBF24;
     }
     .alert-info {
-      background-color: rgba(59, 130, 246, 0.1);
+      background-color: rgba(59, 130, 246, 0.08);
       color: #3B82F6;
       border-left: 3px solid #3B82F6;
     }
@@ -179,25 +180,28 @@
       padding: 0 0.5rem;
     }
     .upload-card {
-      background-color: var(--dji-dark-gray);
-      border: 1px solid var(--dji-border);
+      background-color: var(--white);
+      border: 1px solid var(--pink-light);
       border-radius: 12px;
       padding: 3rem;
       margin: 2rem 0;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 30px rgba(255, 133, 162, 0.05);
     }
     .upload-header {
       text-align: center;
       margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--pink-light);
     }
     .upload-title {
       font-size: 2rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
+      color: var(--text-dark);
     }
     .upload-desc {
       font-size: 1rem;
-      color: var(--dji-gray-light);
+      color: var(--text-gray);
     }
     .form-group {
       margin-bottom: 2rem;
@@ -206,29 +210,29 @@
       display: block;
       margin-bottom: 0.8rem;
       font-size: 1rem;
-      color: var(--dji-white);
+      color: var(--text-dark);
     }
     .form-control {
       width: 100%;
       padding: 0.9rem;
-      background-color: var(--dji-gray);
-      border: 1px solid var(--dji-border);
+      background-color: var(--white);
+      border: 1px solid var(--border-light);
       border-radius: 6px;
-      color: var(--dji-white);
+      color: var(--text-dark);
       font-size: 1rem;
       transition: var(--transition);
     }
     .form-control:focus {
       outline: none;
-      border-color: var(--dji-green);
-      box-shadow: 0 0 0 3px rgba(0, 180, 42, 0.1);
+      border-color: var(--pink-primary);
+      box-shadow: 0 0 0 3px rgba(255, 133, 162, 0.1);
     }
     .form-control-file {
       padding: 0.7rem;
     }
     .form-text {
       font-size: 0.85rem;
-      color: var(--dji-gray-light);
+      color: var(--text-gray);
       margin-top: 0.5rem;
     }
     .textarea-control {

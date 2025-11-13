@@ -8,15 +8,15 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --dji-dark: #121212;
-      --dji-dark-gray: #1E1E1E;
-      --dji-gray: #333333;
-      --dji-green: #00B42A;
-      --dji-green-light: #33C554;
-      --dji-white: #FFFFFF;
-      --dji-gray-light: #86868B;
-      --dji-border: #2D2D2D;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --pink-primary: #FF85A2;
+      --pink-light: #FFE6EE;
+      --pink-dark: #FF5D8F;
+      --white: #FFFFFF;
+      --gray-light: #F5F5F5;
+      --text-dark: #333333;
+      --text-gray: #666666;
+      --border-light: #E0E0E0;
+      --transition: all 0.3s ease;
     }
     * {
       margin: 0;
@@ -24,8 +24,8 @@
       box-sizing: border-box;
     }
     body {
-      background-color: var(--dji-dark);
-      color: var(--dji-white);
+      background-color: var(--white);
+      color: var(--text-dark);
       font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       min-height: 100vh;
       display: flex;
@@ -34,18 +34,18 @@
       padding: 2rem;
     }
     .auth-card {
-      background-color: var(--dji-dark-gray);
-      border: 1px solid var(--dji-border);
+      background-color: var(--white);
+      border: 1px solid var(--pink-light);
       border-radius: 12px;
       padding: 2.5rem;
       width: 100%;
       max-width: 450px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(255, 133, 162, 0.05);
       transition: var(--transition);
     }
     .auth-card:hover {
-      border-color: var(--dji-green);
-      box-shadow: 0 10px 30px rgba(0, 180, 42, 0.1);
+      border-color: var(--pink-primary);
+      box-shadow: 0 10px 30px rgba(255, 133, 162, 0.1);
     }
     .auth-header {
       text-align: center;
@@ -54,7 +54,7 @@
     .auth-logo {
       font-size: 1.8rem;
       font-weight: 700;
-      color: var(--dji-white);
+      color: var(--text-dark);
       text-decoration: none;
       display: flex;
       align-items: center;
@@ -63,11 +63,12 @@
       margin-bottom: 1rem;
     }
     .auth-logo i {
-      color: var(--dji-green);
+      color: var(--pink-primary);
     }
     .auth-title {
       font-size: 1.8rem;
       font-weight: 600;
+      color: var(--text-dark);
     }
     .form-group {
       margin-bottom: 1.5rem;
@@ -76,26 +77,26 @@
       display: block;
       margin-bottom: 0.5rem;
       font-size: 0.95rem;
-      color: var(--dji-white);
+      color: var(--text-dark);
     }
     .form-control {
       width: 100%;
       padding: 0.9rem;
-      background-color: var(--dji-gray);
-      border: 1px solid var(--dji-border);
+      background-color: var(--white);
+      border: 1px solid var(--border-light);
       border-radius: 6px;
-      color: var(--dji-white);
+      color: var(--text-dark);
       font-size: 1rem;
       transition: var(--transition);
     }
     .form-control:focus {
       outline: none;
-      border-color: var(--dji-green);
-      box-shadow: 0 0 0 3px rgba(0, 180, 42, 0.1);
+      border-color: var(--pink-primary);
+      box-shadow: 0 0 0 3px rgba(255, 133, 162, 0.1);
     }
     .form-text {
       font-size: 0.85rem;
-      color: var(--dji-gray-light);
+      color: var(--text-gray);
       margin-top: 0.3rem;
     }
     .btn {
@@ -109,28 +110,28 @@
       transition: var(--transition);
     }
     .btn-primary {
-      background-color: var(--dji-green);
-      color: var(--dji-white);
+      background-color: var(--pink-primary);
+      color: var(--white);
     }
     .btn-primary:hover {
-      background-color: var(--dji-green-light);
+      background-color: var(--pink-dark);
       transform: translateY(-2px);
     }
     .auth-footer {
       text-align: center;
       margin-top: 1.5rem;
       font-size: 0.95rem;
-      color: var(--dji-gray-light);
+      color: var(--text-gray);
     }
     .auth-link {
-      color: var(--dji-green);
+      color: var(--pink-primary);
       text-decoration: none;
       font-weight: 500;
       transition: var(--transition);
     }
     .auth-link:hover {
       text-decoration: underline;
-      color: var(--dji-green-light);
+      color: var(--pink-dark);
     }
     .alert {
       border-radius: 6px;
@@ -142,12 +143,12 @@
       align-items: center;
     }
     .alert-success {
-      background-color: rgba(0, 180, 42, 0.1);
-      color: var(--dji-green);
-      border-left: 3px solid var(--dji-green);
+      background-color: rgba(16, 185, 129, 0.08);
+      color: #10B981;
+      border-left: 3px solid #10B981;
     }
     .alert-danger {
-      background-color: rgba(239, 68, 68, 0.1);
+      background-color: rgba(239, 68, 68, 0.08);
       color: #EF4444;
       border-left: 3px solid #EF4444;
     }
