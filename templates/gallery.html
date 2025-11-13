@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gallery - FurryFriends Photos</title>
+  <title>FurryFriends Photos - Pet Photography Community</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --pink-primary: #FF85A2;
-      --pink-light: #FFE6EE;
-      --pink-dark: #FF5D8F;
-      --white: #FFFFFF;
-      --gray-light: #F5F5F5;
-      --text-dark: #333333;
-      --text-gray: #666666;
-      --border-light: #E0E0E0;
-      --transition: all 0.3s ease;
+      --dji-dark: #FFFFFF;
+      --dji-dark-gray: #FFF5F8;
+      --dji-gray: #FFE6EC;
+      --dji-green: #FF69B4;
+      --dji-green-light: #FF85B3;
+      --dji-white: #333333;
+      --dji-gray-light: #666666;
+      --dji-border: #FFD1DC;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     * {
       margin: 0;
@@ -24,27 +24,25 @@
       box-sizing: border-box;
     }
     body {
-      background-color: var(--white);
-      color: var(--text-dark);
+      background-color: var(--dji-dark);
+      color: var(--dji-white);
       font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       line-height: 1.6;
       min-height: 100vh;
-      padding-top: 70px;
     }
     .dji-nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      background-color: rgba(255, 255, 255, 0.98);
+      background-color: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--dji-border);
       z-index: 1000;
       transition: var(--transition);
-      box-shadow: 0 2px 10px rgba(255, 133, 162, 0.05);
     }
     .dji-nav:hover {
-      border-bottom-color: var(--pink-primary);
+      border-bottom-color: var(--dji-green);
     }
     .nav-container {
       max-width: 1440px;
@@ -58,14 +56,14 @@
     .dji-logo {
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--text-dark);
+      color: var(--dji-white);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
     .dji-logo i {
-      color: var(--pink-primary);
+      color: var(--dji-green);
     }
     .nav-menu {
       display: flex;
@@ -73,7 +71,7 @@
       list-style: none;
     }
     .nav-link {
-      color: var(--text-dark);
+      color: var(--dji-white);
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 500;
@@ -81,7 +79,7 @@
       position: relative;
     }
     .nav-link:hover {
-      color: var(--pink-primary);
+      color: var(--dji-green);
     }
     .nav-link::after {
       content: '';
@@ -90,7 +88,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background-color: var(--pink-primary);
+      background-color: var(--dji-green);
       transition: var(--transition);
     }
     .nav-link:hover::after {
@@ -110,37 +108,129 @@
       transition: var(--transition);
     }
     .btn-outline {
-      color: var(--pink-primary);
-      border: 1px solid var(--pink-primary);
+      color: var(--dji-white);
+      border: 1px solid var(--dji-border);
     }
     .btn-outline:hover {
-      border-color: var(--pink-dark);
-      color: var(--pink-dark);
-      background-color: rgba(255, 133, 162, 0.05);
+      border-color: var(--dji-green);
+      color: var(--dji-green);
+      background-color: rgba(255, 105, 180, 0.05);
     }
     .btn-primary {
-      color: var(--white);
-      background-color: var(--pink-primary);
-      border: 1px solid var(--pink-primary);
+      color: var(--dji-white);
+      background-color: var(--dji-green);
+      border: 1px solid var(--dji-green);
     }
     .btn-primary:hover {
-      background-color: var(--pink-dark);
+      background-color: var(--dji-green-light);
       transform: translateY(-2px);
     }
     .welcome-text {
       font-size: 0.95rem;
-      color: var(--text-gray);
+      color: var(--dji-gray-light);
     }
     .welcome-text strong {
-      color: var(--text-dark);
+      color: var(--dji-white);
     }
-    .container {
+    .hero-section {
+      margin-top: 60px;
+      padding: 6rem 2rem;
+      background: linear-gradient(180deg, var(--dji-dark-gray) 0%, var(--dji-dark) 100%);
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--dji-gray-light);
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .btn-large {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+    }
+    .feature-section {
       max-width: 1440px;
-      margin: 0 auto;
+      margin: 8rem auto;
       padding: 0 2rem;
     }
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--dji-gray-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .gallery-card {
+      background-color: var(--dji-dark-gray);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: var(--transition);
+      border: 1px solid var(--dji-border);
+    }
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--dji-green);
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.1);
+    }
+    .gallery-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    .gallery-card:hover .gallery-img {
+      transform: scale(1.05);
+    }
+    .gallery-info {
+      padding: 1.2rem;
+    }
+    .gallery-owner {
+      font-size: 0.85rem;
+      color: var(--dji-gray-light);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .gallery-caption {
+      font-size: 0.95rem;
+      color: var(--dji-white);
+    }
+    .view-all-btn {
+      text-align: center;
+    }
     .alert-container {
-      margin-bottom: 2rem;
+      max-width: 1440px;
+      margin: 1rem auto 0;
+      padding: 0 2rem;
+      position: relative;
+      top: 70px;
     }
     .alert {
       border-radius: 6px;
@@ -152,22 +242,22 @@
       align-items: center;
     }
     .alert-success {
-      background-color: rgba(16, 185, 129, 0.08);
-      color: #10B981;
-      border-left: 3px solid #10B981;
+      background-color: rgba(255, 105, 180, 0.1);
+      color: var(--dji-green);
+      border-left: 3px solid var(--dji-green);
     }
     .alert-danger {
-      background-color: rgba(239, 68, 68, 0.08);
+      background-color: rgba(239, 68, 68, 0.1);
       color: #EF4444;
       border-left: 3px solid #EF4444;
     }
     .alert-warning {
-      background-color: rgba(251, 191, 36, 0.08);
+      background-color: rgba(251, 191, 36, 0.1);
       color: #FBBF24;
       border-left: 3px solid #FBBF24;
     }
     .alert-info {
-      background-color: rgba(59, 130, 246, 0.08);
+      background-color: rgba(59, 130, 246, 0.1);
       color: #3B82F6;
       border-left: 3px solid #3B82F6;
     }
@@ -179,141 +269,18 @@
       cursor: pointer;
       padding: 0 0.5rem;
     }
-    .gallery-header {
-      text-align: center;
-      margin: 3rem 0;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--pink-light);
-    }
-    .gallery-title {
-      font-size: 2.2rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: var(--text-dark);
-    }
-    .gallery-desc {
-      font-size: 1rem;
-      color: var(--text-gray);
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-bottom: 4rem;
-    }
-    .gallery-card {
-      background-color: var(--white);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: var(--transition);
-      border: 1px solid var(--border-light);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
-      height: 100%;
-    }
-    .gallery-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--pink-light);
-      box-shadow: 0 10px 25px rgba(255, 133, 162, 0.1);
-    }
-    .gallery-img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .gallery-card:hover .gallery-img {
-      transform: scale(1.05);
-    }
-    .gallery-info {
-      padding: 1.2rem;
-    }
-    .gallery-owner {
-      font-size: 0.85rem;
-      color: var(--text-gray);
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .gallery-owner i {
-      color: var(--pink-primary);
-    }
-    .gallery-caption {
-      font-size: 0.95rem;
-      color: var(--text-dark);
-    }
-    .empty-state {
-      grid-column: 1 / -1;
-      padding: 6rem 2rem;
-      text-align: center;
-      background-color: var(--pink-light);
-      border-radius: 12px;
-    }
-    .empty-icon {
-      font-size: 4rem;
-      color: var(--pink-primary);
-      margin-bottom: 1.5rem;
-    }
-    .empty-text {
-      font-size: 1.2rem;
-      color: var(--text-gray);
-      margin-bottom: 1rem;
-    }
-    .empty-subtext {
-      font-size: 1rem;
-      color: var(--text-dark);
-      margin-bottom: 2rem;
-    }
-    .pagination {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 4rem;
-    }
-    .page-item {
-      list-style: none;
-    }
-    .page-link {
-      display: inline-block;
-      padding: 0.6rem 1.2rem;
-      background-color: var(--white);
-      color: var(--text-dark);
-      border: 1px solid var(--border-light);
-      border-radius: 4px;
-      text-decoration: none;
-      transition: var(--transition);
-    }
-    .page-link:hover {
-      background-color: var(--pink-light);
-      color: var(--pink-primary);
-      border-color: var(--pink-light);
-    }
-    .page-item.active .page-link {
-      background-color: var(--pink-primary);
-      border-color: var(--pink-primary);
-      color: var(--white);
-    }
-    .page-item.disabled .page-link {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .page-item.disabled .page-link:hover {
-      background-color: var(--white);
-      color: var(--text-dark);
-      border-color: var(--border-light);
-    }
     @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .hero-subtitle {
+        font-size: 1rem;
+      }
       .nav-menu {
         display: none;
       }
       .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      }
-      .gallery-title {
-        font-size: 1.8rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       }
     }
   </style>
@@ -333,37 +300,49 @@
         {% if session.username %}
           <span class="welcome-text">Welcome, <strong>{{ session.username }}</strong>!</span>
           <a href="{{ url_for('upload') }}" class="action-btn btn-primary">Upload</a>
-          <a href="{{ url_for('index') }}" class="action-btn btn-outline">Home</a>
+          <a href="{{ url_for('logout') }}" class="action-btn btn-outline">Logout</a>
         {% else %}
           <a href="{{ url_for('login') }}" class="action-btn btn-outline">Login</a>
           <a href="{{ url_for('register') }}" class="action-btn btn-primary">Register</a>
-          <a href="{{ url_for('index') }}" class="action-btn btn-outline">Home</a>
         {% endif %}
       </div>
     </div>
   </nav>
 
-  <div class="container">
-    <div class="alert-container">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">
-              {{ message }}
-              <button type="button" class="alert-btn" data-bs-dismiss="alert">&times;</button>
-            </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-    </div>
+  <div class="alert-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+            <button type="button" class="alert-btn" data-bs-dismiss="alert">&times;</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
 
-    <div class="gallery-header">
-      <h2 class="gallery-title">Pet Gallery</h2>
-      <p class="gallery-desc">Discover all the adorable pets in our community</p>
+  <section class="hero-section">
+    <h1 class="hero-title">Capture & Share Your Pet's Moments</h1>
+    <p class="hero-subtitle">Join our community of pet lovers to showcase your furry friends, discover amazing photos, and connect with like-minded people</p>
+    <div class="hero-btns">
+      {% if session.username %}
+        <a href="{{ url_for('gallery') }}" class="action-btn btn-primary btn-large">Explore Gallery</a>
+        <a href="{{ url_for('upload') }}" class="action-btn btn-outline btn-large">Upload Photo</a>
+      {% else %}
+        <a href="{{ url_for('register') }}" class="action-btn btn-primary btn-large">Join Now</a>
+        <a href="{{ url_for('gallery') }}" class="action-btn btn-outline btn-large">View Gallery</a>
+      {% endif %}
     </div>
+  </section>
 
+  <section class="feature-section">
+    <div class="section-header">
+      <h2 class="section-title">Recent Photos</h2>
+      <p class="section-desc">Discover the latest amazing pet photos shared by our community members</p>
+    </div>
     <div class="gallery-grid">
-      {% for img in images %}
+      {% for img in images[:5] %}
         <div class="gallery-card">
           <img src="{{ img.thumbnailURL }}" alt="{{ img.caption }}" class="gallery-img" onclick="window.open('{{ img.originalURL }}', '_blank')">
           <div class="gallery-info">
@@ -374,42 +353,23 @@
           </div>
         </div>
       {% else %}
-        <div class="empty-state">
-          <i class="fas fa-image empty-icon"></i>
-          <p class="empty-text">No photos in the gallery yet</p>
+        <div class="gallery-card" style="grid-column: 1 / -1; padding: 4rem; text-align: center;">
+          <i class="fas fa-image" style="font-size: 4rem; color: var(--dji-gray-light); margin-bottom: 1rem;"></i>
+          <p style="font-size: 1.1rem; color: var(--dji-gray-light);">No photos available yet</p>
           {% if session.username %}
-            <p class="empty-subtext">Be the first to share your pet's photo!</p>
-            <a href="{{ url_for('upload') }}" class="action-btn btn-primary btn-large">Upload First Photo</a>
+            <p style="margin: 1rem 0; color: var(--dji-white);">Be the first to share your pet's photo!</p>
+            <a href="{{ url_for('upload') }}" class="action-btn btn-primary">Upload Now</a>
           {% else %}
-            <p class="empty-subtext">Join our community to start sharing photos!</p>
-            <a href="{{ url_for('register') }}" class="action-btn btn-primary btn-large">Join Now</a>
+            <p style="margin: 1rem 0; color: var(--dji-white);">Join our community to start sharing photos!</p>
+            <a href="{{ url_for('register') }}" class="action-btn btn-primary">Join Community</a>
           {% endif %}
         </div>
       {% endfor %}
     </div>
-
-    {% if total_pages > 1 %}
-      <nav class="pagination" aria-label="Gallery pagination">
-        <ul class="pagination-list">
-          <li class="page-item {% if page == 1 %}disabled{% endif %}">
-            <a href="{{ url_for('gallery', page=page-1) }}" class="page-link" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          {% for p in range(1, total_pages + 1) %}
-            <li class="page-item {% if p == page %}active{% endif %}">
-              <a href="{{ url_for('gallery', page=p) }}" class="page-link">{{ p }}</a>
-            </li>
-          {% endfor %}
-          <li class="page-item {% if page == total_pages %}disabled{% endif %}">
-            <a href="{{ url_for('gallery', page=page+1) }}" class="page-link" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    {% endif %}
-  </div>
+    <div class="view-all-btn">
+      <a href="{{ url_for('gallery') }}" class="action-btn btn-outline btn-large">View All Photos</a>
+    </div>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
