@@ -131,7 +131,7 @@
       </h1>
       <div>
         {% if session.username %}
-          <span class="welcome-text me-3">Welcome, <strong>{{ session.username }}</strong>!</span>
+          <span class="welcome-text me-3">Hello, <strong>{{ session.username }}</strong>!</span>
           <a href="{{ url_for('upload') }}" class="btn btn-primary btn-sm">
             <i class="fas fa-cloud-upload-alt"></i> Upload Photo
           </a>
