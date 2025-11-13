@@ -3,249 +3,373 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FurryFriends Photos</title>
+  <title>FurryFriends Photos - Pet Photography Community</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --primary: #4CAF50;
-      --light: #C8E6C9;
-      --bg: #F1F8E9;
-      --dark: #2E7D32;
-      --shadow: 0 4px 15px rgba(0,0,0,0.1);
+      --dji-dark: #121212;
+      --dji-dark-gray: #1E1E1E;
+      --dji-gray: #333333;
+      --dji-green: #00B42A;
+      --dji-green-light: #33C554;
+      --dji-white: #FFFFFF;
+      --dji-gray-light: #86868B;
+      --dji-border: #2D2D2D;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    body {
-      background: var(--bg);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-      position: relative;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-
-    body::before {
-      content: "";
+    body {
+      background-color: var(--dji-dark);
+      color: var(--dji-white);
+      font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .dji-nav {
       position: fixed;
-      inset: 0;
-      background: url('/images/cat.jpg') center/cover no-repeat;
-      filter: blur(3px);
-      opacity: 1;
-      z-index: -2;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(18, 18, 18, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--dji-border);
+      z-index: 1000;
+      transition: var(--transition);
     }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(1px);
-      z-index: -1;
+    .dji-nav:hover {
+      border-bottom-color: var(--dji-green);
     }
-
-    .container { position: relative; z-index: 1; }
-
-    .navbar-brand {
+    .nav-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+    }
+    .dji-logo {
+      font-size: 1.5rem;
       font-weight: 700;
-      color: var(--primary) !important;
-      font-size: 1.8rem;
+      color: var(--dji-white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-
-    .hero-section {
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(102, 187, 106, 0.9));
-      color: white;
-      padding: 4rem 0;
-      border-radius: 20px;
-      margin: 2rem 0;
-      text-align: center;
-      box-shadow: var(--shadow);
+    .dji-logo i {
+      color: var(--dji-green);
     }
-
-    .card {
-      border: none;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .nav-menu {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
     }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    .nav-link {
+      color: var(--dji-white);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
     }
-    .card-img-top {
-      height: 200px;
-      object-fit: cover;
+    .nav-link:hover {
+      color: var(--dji-green);
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--dji-green);
+      transition: var(--transition);
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .action-btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .btn-outline {
+      color: var(--dji-white);
+      border: 1px solid var(--dji-border);
+    }
+    .btn-outline:hover {
+      border-color: var(--dji-green);
+      color: var(--dji-green);
+      background-color: rgba(0, 180, 42, 0.05);
     }
     .btn-primary {
-      background: var(--primary);
-      border: none;
-      border-radius: 50px;
-      padding: 0.5rem 1.5rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      color: var(--dji-white);
+      background-color: var(--dji-green);
+      border: 1px solid var(--dji-green);
     }
     .btn-primary:hover {
-      background: var(--dark);
+      background-color: var(--dji-green-light);
+      transform: translateY(-2px);
+    }
+    .welcome-text {
+      font-size: 0.95rem;
+      color: var(--dji-gray-light);
+    }
+    .welcome-text strong {
+      color: var(--dji-white);
+    }
+    .hero-section {
+      margin-top: 60px;
+      padding: 6rem 2rem;
+      background: linear-gradient(180deg, var(--dji-dark-gray) 0%, var(--dji-dark) 100%);
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--dji-gray-light);
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .btn-large {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+    }
+    .feature-section {
+      max-width: 1440px;
+      margin: 8rem auto;
+      padding: 0 2rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--dji-gray-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .gallery-card {
+      background-color: var(--dji-dark-gray);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: var(--transition);
+      border: 1px solid var(--dji-border);
+    }
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--dji-green);
+      box-shadow: 0 10px 30px rgba(0, 180, 42, 0.1);
+    }
+    .gallery-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    .gallery-card:hover .gallery-img {
       transform: scale(1.05);
     }
-    .btn-outline-primary {
-      border-color: var(--primary);
-      color: var(--primary);
-      border-radius: 50px;
-      font-weight: 600;
-      transition: all 0.3s ease;
+    .gallery-info {
+      padding: 1.2rem;
     }
-    .btn-outline-primary:hover {
-      background: var(--primary);
-      color: white;
+    .gallery-owner {
+      font-size: 0.85rem;
+      color: var(--dji-gray-light);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-
-    .welcome-text {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #444;
+    .gallery-caption {
+      font-size: 0.95rem;
+      color: var(--dji-white);
     }
-
-    .empty-state {
+    .view-all-btn {
       text-align: center;
-      padding: 3rem;
-      color: #888;
-      font-size: 1.1rem;
     }
-    .empty-state i {
-      font-size: 3rem;
-      color: var(--primary);
+    .alert-container {
+      max-width: 1440px;
+      margin: 1rem auto 0;
+      padding: 0 2rem;
+      position: relative;
+      top: 70px;
+    }
+    .alert {
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
       margin-bottom: 1rem;
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    .feature-icon {
-      font-size: 3rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-      transition: transform 0.3s ease;
+    .alert-success {
+      background-color: rgba(0, 180, 42, 0.1);
+      color: var(--dji-green);
+      border-left: 3px solid var(--dji-green);
     }
-    .feature-icon:hover {
-      transform: scale(1.1);
+    .alert-danger {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #EF4444;
+      border-left: 3px solid #EF4444;
+    }
+    .alert-warning {
+      background-color: rgba(251, 191, 36, 0.1);
+      color: #FBBF24;
+      border-left: 3px solid #FBBF24;
+    }
+    .alert-info {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: #3B82F6;
+      border-left: 3px solid #3B82F6;
+    }
+    .alert-btn {
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 0.5rem;
+    }
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
     }
   </style>
 </head>
 <body>
-
-  <div class="overlay"></div>
-
-  <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-      <h1 class="navbar-brand mb-0">
-        <i class="fas fa-paw"></i> FurryFriends Photos
-      </h1>
-      <div>
+  <nav class="dji-nav">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="dji-logo">
+        <i class="fas fa-paw"></i> FurryFriends
+      </a>
+      <ul class="nav-menu">
+        <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('gallery') }}" class="nav-link">Gallery</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link">Upload</a></li>
+      </ul>
+      <div class="nav-actions">
         {% if session.username %}
-          <span class="welcome-text me-3">Hello, <strong>{{ session.username }}</strong>!</span>
-          <a href="{{ url_for('upload') }}" class="btn btn-primary btn-sm">
-            <i class="fas fa-cloud-upload-alt"></i> Upload Photo
-          </a>
-          <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-sign-out-alt"></i> Logout
-          </a>
+          <span class="welcome-text">Welcome, <strong>{{ session.username }}</strong>!</span>
+          <a href="{{ url_for('upload') }}" class="action-btn btn-primary">Upload</a>
+          <a href="{{ url_for('logout') }}" class="action-btn btn-outline">Logout</a>
         {% else %}
-          <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm">Login</a>
-          <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-sm">Register</a>
+          <a href="{{ url_for('login') }}" class="action-btn btn-outline">Login</a>
+          <a href="{{ url_for('register') }}" class="action-btn btn-primary">Register</a>
         {% endif %}
       </div>
     </div>
+  </nav>
 
+  <div class="alert-container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ 'danger' if category=='danger' else 'success' if category=='success' else 'warning' if category=='warning' else 'info' }} alert-dismissible fade show" role="alert">
+          <div class="alert alert-{{ category }}">
             {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="alert-btn" data-bs-dismiss="alert">&times;</button>
           </div>
         {% endfor %}
       {% endif %}
     {% endwith %}
+  </div>
 
-    <!-- Hero Section -->
-    <div class="hero-section">
-      <div class="container">
-        <h1 class="display-4 fw-bold mb-3">Share Your Pet's Best Moments</h1>
-        <p class="lead mb-4">Join our community of pet lovers and showcase your furry friends to the world</p>
-        {% if session.username %}
-          <a href="{{ url_for('gallery') }}" class="btn btn-light btn-lg me-2">
-            <i class="fas fa-images"></i> Browse Gallery
-          </a>
-          <a href="{{ url_for('upload') }}" class="btn btn-outline-light btn-lg">
-            <i class="fas fa-cloud-upload-alt"></i> Upload Photo
-          </a>
-        {% else %}
-          <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-2">
-            <i class="fas fa-user-plus"></i> Join Now
-          </a>
-          <a href="{{ url_for('gallery') }}" class="btn btn-outline-light btn-lg">
-            <i class="fas fa-images"></i> View Gallery
-          </a>
-        {% endif %}
-      </div>
+  <section class="hero-section">
+    <h1 class="hero-title">Capture & Share Your Pet's Moments</h1>
+    <p class="hero-subtitle">Join our community of pet lovers to showcase your furry friends, discover amazing photos, and connect with like-minded people</p>
+    <div class="hero-btns">
+      {% if session.username %}
+        <a href="{{ url_for('gallery') }}" class="action-btn btn-primary btn-large">Explore Gallery</a>
+        <a href="{{ url_for('upload') }}" class="action-btn btn-outline btn-large">Upload Photo</a>
+      {% else %}
+        <a href="{{ url_for('register') }}" class="action-btn btn-primary btn-large">Join Now</a>
+        <a href="{{ url_for('gallery') }}" class="action-btn btn-outline btn-large">View Gallery</a>
+      {% endif %}
     </div>
+  </section>
 
-    <!-- Features Section -->
-    <div class="row text-center mb-5">
-      <div class="col-md-4 mb-4">
-        <div class="feature-icon">
-          <i class="fas fa-camera"></i>
-        </div>
-        <h4>Upload Photos</h4>
-        <p class="text-muted">Share high-quality photos of your pets with the community</p>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="feature-icon">
-          <i class="fas fa-users"></i>
-        </div>
-        <h4>Join Community</h4>
-        <p class="text-muted">Connect with other pet lovers and share experiences</p>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="feature-icon">
-          <i class="fas fa-heart"></i>
-        </div>
-        <h4>Show Love</h4>
-        <p class="text-muted">Discover adorable pets and spread the love</p>
-      </div>
+  <section class="feature-section">
+    <div class="section-header">
+      <h2 class="section-title">Recent Photos</h2>
+      <p class="section-desc">Discover the latest amazing pet photos shared by our community members</p>
     </div>
-
-    <!-- Recent Photos Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3>Recent Photos</h3>
-      <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary">
-        View All Photos <i class="fas fa-arrow-right"></i>
-      </a>
-    </div>
-
-    <div class="row g-4">
-      {% for img in images %}
-        <div class="col-md-4 col-lg-3">
-          <div class="card h-100">
-            <img src="{{ img.thumbnailURL }}" class="card-img-top" alt="{{ img.caption }}">
-            <div class="card-body d-flex flex-column">
-              <p class="card-text text-muted small mb-1">
-                <i class="fas fa-user"></i> {{ img.owner.username }}
-              </p>
-              {% if img.caption %}
-                <p class="card-text mt-auto">{{ img.caption }}</p>
-              {% endif %}
-            </div>
+    <div class="gallery-grid">
+      {% for img in images[:5] %}
+        <div class="gallery-card">
+          <img src="{{ img.thumbnailURL }}" alt="{{ img.caption }}" class="gallery-img" onclick="window.open('{{ img.originalURL }}', '_blank')">
+          <div class="gallery-info">
+            <p class="gallery-owner"><i class="fas fa-user"></i> {{ img.owner.username }}</p>
+            {% if img.caption %}
+              <p class="gallery-caption">{{ img.caption }}</p>
+            {% endif %}
           </div>
         </div>
       {% else %}
-        <div class="col-12">
-          <div class="empty-state">
-            <i class="fas fa-image"></i>
-            <p>No photos yet, be the first to upload!</p>
-            <a href="{{ url_for('upload') }}" class="btn btn-primary mt-3">Upload Now</a>
-          </div>
+        <div class="gallery-card" style="grid-column: 1 / -1; padding: 4rem; text-align: center;">
+          <i class="fas fa-image" style="font-size: 4rem; color: var(--dji-gray-light); margin-bottom: 1rem;"></i>
+          <p style="font-size: 1.1rem; color: var(--dji-gray-light);">No photos available yet</p>
+          {% if session.username %}
+            <p style="margin: 1rem 0; color: var(--dji-white);">Be the first to share your pet's photo!</p>
+            <a href="{{ url_for('upload') }}" class="action-btn btn-primary">Upload Now</a>
+          {% else %}
+            <p style="margin: 1rem 0; color: var(--dji-white);">Join our community to start sharing photos!</p>
+            <a href="{{ url_for('register') }}" class="action-btn btn-primary">Join Community</a>
+          {% endif %}
         </div>
       {% endfor %}
     </div>
-  </div>
+    <div class="view-all-btn">
+      <a href="{{ url_for('gallery') }}" class="action-btn btn-outline btn-large">View All Photos</a>
+    </div>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
