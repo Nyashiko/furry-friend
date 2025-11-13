@@ -28,14 +28,11 @@ else:
 container_client_original = blob_service_client.get_container_client("originals")
 container_client_thumb = blob_service_client.get_container_client("thumbnails")
 
-SQL_CONNECTION_STRING = os.getenv('SQL_CONNECTION_STRING',
-    'mssql+pyodbc://adminuser:Password123@friend.database.windows.net:1433/friend?driver=ODBC+Driver+18+for+SQL+Server&Encrypt=yes;TrustServerCertificate=no;Connection+Timeout=30'
-)
+SQL_CONNECTION_STRING = os.getenv('SQL_CONNECTION_STRING')
+if not SQL_CONNECTION_STRING:
+    raise ValueError("SQL_CONNECTION_STRING environment variable is required")
 
-if 'Authentication=ActiveDirectoryMSI' in SQL_CONNECTION_STRING:
-    print("Using Azure Managed Identity (VM)")
-else:
-    print("Using SQL Authentication (Local)")
+print("Using SQL Authentication")
 
 engine = create_engine(SQL_CONNECTION_STRING, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
