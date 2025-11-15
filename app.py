@@ -15,7 +15,6 @@ import bcrypt
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'your-secret-key-change-in-production'
 
-# ==================== Azure Configuration ====================
 connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
 if connect_str:
     blob_service_client = BlobServiceClient.from_connection_string(connect_str)
@@ -42,7 +41,6 @@ engine = create_engine(SQL_CONNECTION_STRING, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# ==================== Database Models ====================
 class User(Base):
     __tablename__ = 'Users'
     userID = Column(Integer, primary_key=True)
@@ -61,34 +59,9 @@ class Image(Base):
 
 Base.metadata.create_all(bind=engine)
 
-# ==================== Helper Functions ====================
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
-def create_thumbnail(image_data, size=(150, 150)):
-
-    try:
-        img = PILImage.open(io.BytesIO(image_data))
-
-        max_dimension = 2000
-        if max(img.size) > max_dimension:
-            ratio = max_dimension / max(img.size)
-            new_size = (int(img.size[0] * ratio), int(img.size[1] * ratio))
-            img = img.resize(new_size, Image.Resampling.LANCZOS)
-
-        if img.mode in ('RGBA', 'LA', 'P'):
-            img = img.convert('RGB')
-
-        img.thumbnail(size, Image.Resampling.LANCZOS)
-
-        output = io.BytesIO()
-        img.save(output, format='JPEG', quality=80, optimize=True)
-        return output.getvalue()
-
-    except Exception as e:
-        print(f"Thumbnail generation failed: {e}")
-        return image_data
-# ==================== Routes ====================
 @app.route('/images/<path:filename>')
 def custom_static(filename):
     return send_from_directory('images', filename)
@@ -97,7 +70,6 @@ def custom_static(filename):
 def index():
     db = SessionLocal()
     try:
-        # Use eager loading to load owner relationship
         images = db.query(Image).options(joinedload(Image.owner)).order_by(Image.imageID.desc()).limit(12).all()
         return render_template('index.html', images=images)
     finally:
@@ -110,7 +82,6 @@ def gallery():
         page = request.args.get('page', 1, type=int)
         per_page = 20
         
-        # Use eager loading to load owner relationship
         images = db.query(Image).options(joinedload(Image.owner)).order_by(Image.imageID.desc()).offset((page-1)*per_page).limit(per_page).all()
         total_images = db.query(Image).count()
         total_pages = (total_images + per_page - 1) // per_page
@@ -191,26 +162,17 @@ def upload():
                     flash('File is empty.', 'danger')
                     return redirect(request.url)
                 
-                # Upload original image
                 blob_client = container_client_original.get_blob_client(filename)
                 blob_client.upload_blob(file_data, overwrite=True)
                 original_url = f"https://friend01.blob.core.windows.net/originals/{filename}"
                 
-                # Generate thumbnail
-                thumb_data = create_thumbnail(file_data)
-                thumb_filename = f"thumb_{filename}"
-                thumb_client = container_client_thumb.get_blob_client(thumb_filename)
-                thumb_client.upload_blob(thumb_data, overwrite=True)
-                thumb_url = f"https://friend01.blob.core.windows.net/thumbnails/{thumb_filename}"
-                
-                # Save to database
                 db = SessionLocal()
                 try:
                     new_image = Image(
                         caption=caption,
                         ownerUserID=session['user_id'],
                         originalURL=original_url,
-                        thumbnailURL=thumb_url
+                        thumbnailURL=""
                     )
                     db.add(new_image)
                     db.commit()
