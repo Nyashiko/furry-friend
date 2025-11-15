@@ -427,7 +427,7 @@
       <p class="section-desc">Discover the latest amazing pet photos shared by our community members</p>
     </div>
     <div class="gallery-grid">
-      {% for img in images[:5] %}
+      {% for img in images[:8] %}
         <div class="gallery-card">
           <img src="{{ img.display_url }}" alt="{{ img.caption }}" class="gallery-img" onclick="window.open('{{ img.display_url }}', '_blank')">
           <div class="gallery-info">
