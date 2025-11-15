@@ -71,6 +71,11 @@ def index():
     db = SessionLocal()
     try:
         images = db.query(Image).options(joinedload(Image.owner)).order_by(Image.imageID.desc()).limit(12).all()
+        
+        for image in images:
+            if not image.thumbnailURL:
+                image.thumbnailURL = image.originalURL
+                
         return render_template('index.html', images=images)
     finally:
         db.close()
@@ -83,6 +88,11 @@ def gallery():
         per_page = 20
         
         images = db.query(Image).options(joinedload(Image.owner)).order_by(Image.imageID.desc()).offset((page-1)*per_page).limit(per_page).all()
+        
+        for image in images:
+            if not image.thumbnailURL:
+                image.thumbnailURL = image.originalURL
+        
         total_images = db.query(Image).count()
         total_pages = (total_images + per_page - 1) // per_page
         
@@ -176,7 +186,7 @@ def upload():
                     )
                     db.add(new_image)
                     db.commit()
-                    flash('Upload successful!', 'success')
+                    flash('Upload successful! Thumbnail will be generated shortly.', 'success')
                     return redirect(url_for('gallery'))
                 except Exception as e:
                     db.rollback()
