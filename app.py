@@ -7,8 +7,6 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, joinedload
 import os
-from PIL import Image as PILImage
-import io
 import bcrypt
 
 
@@ -74,7 +72,9 @@ def index():
         
         for image in images:
             if not image.thumbnailURL:
-                image.thumbnailURL = image.originalURL
+                image.display_url = image.originalURL
+            else:
+                image.display_url = image.thumbnailURL
                 
         return render_template('index.html', images=images)
     finally:
@@ -91,7 +91,9 @@ def gallery():
         
         for image in images:
             if not image.thumbnailURL:
-                image.thumbnailURL = image.originalURL
+                image.display_url = image.originalURL
+            else:
+                image.display_url = image.thumbnailURL
         
         total_images = db.query(Image).count()
         total_pages = (total_images + per_page - 1) // per_page

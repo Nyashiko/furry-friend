@@ -429,7 +429,7 @@
     <div class="gallery-grid">
       {% for img in images[:5] %}
         <div class="gallery-card">
-          <img src="{{ img.thumbnailURL }}" alt="{{ img.caption }}" class="gallery-img" onclick="window.open('{{ img.originalURL }}', '_blank')">
+          <img src="{{ img.display_url }}" alt="{{ img.caption }}" class="gallery-img" onclick="window.open('{{ img.display_url }}', '_blank')">
           <div class="gallery-info">
             <p class="gallery-owner"><i class="fas fa-user"></i> {{ img.owner.username }}</p>
             {% if img.caption %}
