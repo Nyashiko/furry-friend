@@ -1,5 +1,7 @@
 ## FurryFriends website quick deployment guide
 
+* Web application link: http://4.221.14.161/
+
 An automation script for automatically deploying changes to a VM after uploading them to GitHub.
 
 ## Features
